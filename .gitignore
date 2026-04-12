@@ -1,0 +1,120 @@
+# ---------------------------------------------------------------------------
+# Claude Code / AI tooling — never commit
+# ---------------------------------------------------------------------------
+.claude/
+CLAUDE.md
+
+# ---------------------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------------------
+.DS_Store
+*.swp
+*.swo
+*.log
+.history
+.atom/
+.build/
+.buildlog/
+.svn/
+.swiftpm/
+.vscode/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# ---------------------------------------------------------------------------
+# Flutter / Dart / pub
+# ---------------------------------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.fvm/
+.fvmrc
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+doc/api/
+migrate_working_dir/
+
+# ---------------------------------------------------------------------------
+# iOS
+# ---------------------------------------------------------------------------
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/.last_build_id
+ios/Flutter/ephemeral/
+ios/Runner/GeneratedPluginRegistrant.*
+*.xcuserdata/
+*.xcworkspace/xcuserdata/
+**/DerivedData/
+
+# ---------------------------------------------------------------------------
+# macOS
+# ---------------------------------------------------------------------------
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Flutter/Flutter-Debug.xcconfig
+macos/Flutter/Flutter-Release.xcconfig
+
+# ---------------------------------------------------------------------------
+# Android
+# ---------------------------------------------------------------------------
+android/.gradle/
+android/.kotlin/
+android/captures/
+android/local.properties
+android/key.properties
+android/app/.cxx/
+android/app/build/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/.idea/
+**/gradle-wrapper.jar
+# keystores are SECRETS — never commit
+*.jks
+*.keystore
+
+# ---------------------------------------------------------------------------
+# Linux / Windows embedder build artefacts
+# ---------------------------------------------------------------------------
+linux/flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# ---------------------------------------------------------------------------
+# Rust bridge crate (rust/)
+# ---------------------------------------------------------------------------
+rust/target/
+
+# ---------------------------------------------------------------------------
+# Symbolication / obfuscation
+# ---------------------------------------------------------------------------
+app.*.symbols
+app.*.map.json
+
+# ---------------------------------------------------------------------------
+# Secrets — defensive
+# ---------------------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+!rust/src/**/*.pem
+!ios/**/*.pem
+!macos/**/*.pem
+
+# ---------------------------------------------------------------------------
+# Misc
+# ---------------------------------------------------------------------------
+*.class
+*.pyc
