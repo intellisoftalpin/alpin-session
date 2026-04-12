@@ -7,12 +7,7 @@ behaviour identical across platforms.
 
 > ⚠️ **Not affiliated with the Session Foundation or Oxen Labs.** Alpin
 > Session is an independent implementation that speaks to the same public
-> Session service-node network. The reference apps live at
-> [session-android](https://github.com/session-foundation/session-android) and
-> [session-ios](https://github.com/session-foundation/session-ios).
->
-> Alpin Session is pre-1.0 and should not be relied on as your only Session
-> client while under active development.
+> Session service-node network. 
 
 ---
 
@@ -22,7 +17,6 @@ behaviour identical across platforms.
 |---|---|
 | Account create / restore (13-word mnemonic) | ✅ |
 | 1-to-1 messaging (send / receive, onion-routed) | ✅ |
-| Onion-routed snode RPCs (no direct IP leak) | ✅ |
 | Local database encryption (SQLCipher) | ✅ |
 | Group messaging | 🚧 planned |
 | Communities / open groups | 🚧 planned |
@@ -42,8 +36,7 @@ behaviour identical across platforms.
 - **Parity with upstream Session, not with upstream apps.** Wire formats,
   encryption, onion routing, seed CA pinning, swarm lookup — all match the
   official clients byte-for-byte. The UI is our own.
-- **No web build.** Only iOS, Android, Windows, macOS, Linux. Session's
-  threat model doesn't suit browser-hosted key material.
+
 
 ## Architecture
 
