@@ -6,13 +6,7 @@ on:
       - main
     tags:
       - 'v*'
-
   workflow_dispatch:
-    # inputs:
-    #   reason:
-    #     description: "Manual run reason"
-    #     required: true
-    #     default: "Triggered manually"
 
 jobs:
   release:
@@ -41,3 +35,70 @@ jobs:
 
       - name: Flutter pub get
         run: flutter pub get
+
+      - name: Setup App Store Connect API key
+        shell: bash
+        run: |
+          set -euo pipefail
+          KEY_DIR="$HOME/.appstoreconnect/private_keys"
+          KEY_PATH="$KEY_DIR/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8"
+          mkdir -p "$KEY_DIR"
+          cat > "$KEY_PATH" <<EOF
+          ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          EOF
+
+      - name: Install CocoaPods dependencies
+        working-directory: ios
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/bin:$PATH"
+          pod install
+
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v7
+        with:
+          p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERT }}
+          p12-password: ${{ secrets.IOS_DISTRIBUTION_CERT_PASSWORD }}
+
+      - name: Get version from pubspec
+        id: version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')
+          echo "app_version=$VERSION" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Build iOS app
+        run: |
+          flutter build ipa \
+            --release \
+            --no-codesign \
+            --build-name=${{ steps.version.outputs.app_version }}
+
+      - name: Export IPA with automatic signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -exportArchive \
+            -archivePath build/ios/archive/Runner.xcarchive \
+            -exportOptionsPlist ios/exportOptions.plist \
+            -exportPath build/ios/ipa \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$HOME/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8" \
+            -authenticationKeyID "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
+
+      - name: Upload to TestFlight
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun altool --upload-app \
+            --type ios \
+            --file build/ios/ipa/IntelliWallet.ipa \
+            --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
+            --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
+
+      - name: Cleanup App Store Connect key
+        if: always()
+        run: |
+          rm -f "$HOME/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8"
