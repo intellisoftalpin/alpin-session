@@ -94,7 +94,7 @@ jobs:
           set -euo pipefail
           xcrun altool --upload-app \
             --type ios \
-            --file build/ios/ipa/IntelliWallet.ipa \
+            --file build/ios/ipa/AlpinSession.ipa \
             --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
             --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
 
